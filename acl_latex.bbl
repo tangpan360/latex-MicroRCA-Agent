@@ -1,9 +1,12 @@
-\begin{thebibliography}{12}
+\begin{thebibliography}{14}
 \providecommand{\natexlab}[1]{#1}
 
 \bibitem[{Chen et~al.(2024)Chen, Xiao, Zhang, Luo, Lian, and Liu}]{chen2024bge}
-Jianlv Chen, Shitao Xiao, Peitian Zhang, Kun Luo, Defu Lian, and Zheng Liu. 2024.
-\newblock \href {https://arxiv.org/abs/2402.03216} {Bge m3-embedding: Multi-lingual, multi-functionality, multi-granularity text embeddings through self-knowledge distillation}.
+Jianlv Chen, Shitao Xiao, Peitian Zhang, Kun Luo, Defu Lian, and Zheng Liu.
+  2024.
+\newblock \href {https://arxiv.org/abs/2402.03216} {Bge m3-embedding:
+  Multi-lingual, multi-functionality, multi-granularity text embeddings through
+  self-knowledge distillation}.
 \newblock \emph{Preprint}, arXiv:2402.03216.
 
 \bibitem[{Gao et~al.(2022)Gao, Ma, Lin, and Callan}]{gao2022precise}
@@ -11,53 +14,103 @@ Luyu Gao, Xueguang Ma, Jimmy Lin, and Jamie Callan. 2022.
 \newblock Precise zero-shot dense retrieval without relevance labels.
 \newblock \emph{arXiv preprint arXiv:2212.10496}.
 
-\bibitem[{GLM et~al.(2024)GLM, Zeng, Xu, Wang, Zhang, Yin, Rojas, Feng, Zhao, Lai, Yu, Wang, Sun, Zhang, Cheng, Gui, Tang, Zhang, Li, Zhao, Wu, Zhong, Liu, Huang, Zhang, Zheng, Lu, Duan, Zhang, Cao, Yang, Tam, Zhao, Liu, Xia, Zhang, Gu, Lv, Liu, Liu, Yang, Song, Zhang, An, Xu, Niu, Yang, Li, Bai, Dong, Qi, Wang, Yang, Du, Hou, and Wang}]{glm2024chatglm}
-Team GLM, Aohan Zeng, Bin Xu, Bowen Wang, Chenhui Zhang, Da~Yin, Diego Rojas, Guanyu Feng, Hanlin Zhao, Hanyu Lai, Hao Yu, Hongning Wang, Jiadai Sun, Jiajie Zhang, Jiale Cheng, Jiayi Gui, Jie Tang, Jing Zhang, Juanzi Li, Lei Zhao, Lindong Wu, Lucen Zhong, Mingdao Liu, Minlie Huang, Peng Zhang, Qinkai Zheng, Rui Lu, Shuaiqi Duan, Shudan Zhang, Shulin Cao, Shuxun Yang, Weng~Lam Tam, Wenyi Zhao, Xiao Liu, Xiao Xia, Xiaohan Zhang, Xiaotao Gu, Xin Lv, Xinghan Liu, Xinyi Liu, Xinyue Yang, Xixuan Song, Xunkai Zhang, Yifan An, Yifan Xu, Yilin Niu, Yuantao Yang, Yueyan Li, Yushi Bai, Yuxiao Dong, Zehan Qi, Zhaoyu Wang, Zhen Yang, Zhengxiao Du, Zhenyu Hou, and Zihan Wang. 2024.
-\newblock \href {https://arxiv.org/abs/2406.12793} {Chatglm: A family of large language models from glm-130b to glm-4 all tools}.
+\bibitem[{GLM et~al.(2024)GLM, Zeng, Xu, Wang, Zhang, Yin, Rojas, Feng, Zhao,
+  Lai, Yu, Wang, Sun, Zhang, Cheng, Gui, Tang, Zhang, Li, Zhao, Wu, Zhong, Liu,
+  Huang, Zhang, Zheng, Lu, Duan, Zhang, Cao, Yang, Tam, Zhao, Liu, Xia, Zhang,
+  Gu, Lv, Liu, Liu, Yang, Song, Zhang, An, Xu, Niu, Yang, Li, Bai, Dong, Qi,
+  Wang, Yang, Du, Hou, and Wang}]{glm2024chatglm}
+Team GLM, Aohan Zeng, Bin Xu, Bowen Wang, Chenhui Zhang, Da~Yin, Diego Rojas,
+  Guanyu Feng, Hanlin Zhao, Hanyu Lai, Hao Yu, Hongning Wang, Jiadai Sun,
+  Jiajie Zhang, Jiale Cheng, Jiayi Gui, Jie Tang, Jing Zhang, Juanzi Li, Lei
+  Zhao, Lindong Wu, Lucen Zhong, Mingdao Liu, Minlie Huang, Peng Zhang, Qinkai
+  Zheng, Rui Lu, Shuaiqi Duan, Shudan Zhang, Shulin Cao, Shuxun Yang, Weng~Lam
+  Tam, Wenyi Zhao, Xiao Liu, Xiao Xia, Xiaohan Zhang, Xiaotao Gu, Xin Lv,
+  Xinghan Liu, Xinyi Liu, Xinyue Yang, Xixuan Song, Xunkai Zhang, Yifan An,
+  Yifan Xu, Yilin Niu, Yuantao Yang, Yueyan Li, Yushi Bai, Yuxiao Dong, Zehan
+  Qi, Zhaoyu Wang, Zhen Yang, Zhengxiao Du, Zhenyu Hou, and Zihan Wang. 2024.
+\newblock \href {https://arxiv.org/abs/2406.12793} {Chatglm: A family of large
+  language models from glm-130b to glm-4 all tools}.
 \newblock \emph{Preprint}, arXiv:2406.12793.
 
-\bibitem[{Jiang et~al.(2023{\natexlab{a}})Jiang, Wu, Lin, Yang, and Qiu}]{jiang-etal-2023-llmlingua}
-Huiqiang Jiang, Qianhui Wu, Chin-Yew Lin, Yuqing Yang, and Lili Qiu. 2023{\natexlab{a}}.
-\newblock \href {https://doi.org/10.18653/v1/2023.emnlp-main.825} {{LLML}ingua: Compressing prompts for accelerated inference of large language models}.
-\newblock In \emph{Proceedings of the 2023 Conference on Empirical Methods in Natural Language Processing}, pages 13358--13376, Singapore. Association for Computational Linguistics.
+\bibitem[{He et~al.(2017)He, Zhu, Zheng, and Lyu}]{he2017drain}
+Pinjia He, Jieming Zhu, Zibin Zheng, and Michael~R Lyu. 2017.
+\newblock Drain: An online log parsing approach with fixed depth tree.
+\newblock In \emph{2017 IEEE international conference on web services (ICWS)},
+  pages 33--40. IEEE.
 
-\bibitem[{Jiang et~al.(2023{\natexlab{b}})Jiang, Wu, Luo, Li, Lin, Yang, and Qiu}]{jiang2023longllmlingua}
-Huiqiang Jiang, Qianhui Wu, Xufang Luo, Dongsheng Li, Chin-Yew Lin, Yuqing Yang, and Lili Qiu. 2023{\natexlab{b}}.
-\newblock Longllmlingua: Accelerating and enhancing llms in long context scenarios via prompt compression.
+\bibitem[{Jiang et~al.(2023{\natexlab{a}})Jiang, Wu, Lin, Yang, and
+  Qiu}]{jiang-etal-2023-llmlingua}
+Huiqiang Jiang, Qianhui Wu, Chin-Yew Lin, Yuqing Yang, and Lili Qiu.
+  2023{\natexlab{a}}.
+\newblock \href {https://doi.org/10.18653/v1/2023.emnlp-main.825} {{LLML}ingua:
+  Compressing prompts for accelerated inference of large language models}.
+\newblock In \emph{Proceedings of the 2023 Conference on Empirical Methods in
+  Natural Language Processing}, pages 13358--13376, Singapore. Association for
+  Computational Linguistics.
+
+\bibitem[{Jiang et~al.(2023{\natexlab{b}})Jiang, Wu, Luo, Li, Lin, Yang, and
+  Qiu}]{jiang2023longllmlingua}
+Huiqiang Jiang, Qianhui Wu, Xufang Luo, Dongsheng Li, Chin-Yew Lin, Yuqing
+  Yang, and Lili Qiu. 2023{\natexlab{b}}.
+\newblock Longllmlingua: Accelerating and enhancing llms in long context
+  scenarios via prompt compression.
 \newblock \emph{arXiv preprint arXiv:2310.06839}.
 
-\bibitem[{Li et~al.(2023)Li, Zhang, Zhang, Long, Xie, and Zhang}]{li2023towards}
-Zehan Li, Xin Zhang, Yanzhao Zhang, Dingkun Long, Pengjun Xie, and Meishan Zhang. 2023.
-\newblock Towards general text embeddings with multi-stage contrastive learning.
+\bibitem[{Li et~al.(2023)Li, Zhang, Zhang, Long, Xie, and
+  Zhang}]{li2023towards}
+Zehan Li, Xin Zhang, Yanzhao Zhang, Dingkun Long, Pengjun Xie, and Meishan
+  Zhang. 2023.
+\newblock Towards general text embeddings with multi-stage contrastive
+  learning.
 \newblock \emph{arXiv preprint arXiv:2308.03281}.
 
-\bibitem[{Liu et~al.(2020)Liu, Zhou, Wang, Zhao, Deng, and Ju}]{liu-etal-2020-fastbert}
+\bibitem[{Liu et~al.(2008)Liu, Ting, and Zhou}]{liu2008isolation}
+Fei~Tony Liu, Kai~Ming Ting, and Zhi-Hua Zhou. 2008.
+\newblock Isolation forest.
+\newblock In \emph{2008 eighth ieee international conference on data mining},
+  pages 413--422. IEEE.
+
+\bibitem[{Liu et~al.(2020)Liu, Zhou, Wang, Zhao, Deng, and
+  Ju}]{liu-etal-2020-fastbert}
 Weijie Liu, Peng Zhou, Zhiruo Wang, Zhe Zhao, Haotang Deng, and Qi~Ju. 2020.
-\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.537} {{F}ast{BERT}: a self-distilling {BERT} with adaptive inference time}.
-\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics}, pages 6035--6044, Online. Association for Computational Linguistics.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.537} {{F}ast{BERT}:
+  a self-distilling {BERT} with adaptive inference time}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 6035--6044, Online. Association for
+  Computational Linguistics.
 
 \bibitem[{Lù(2024)}]{bm25s}
 Xing~Han Lù. 2024.
-\newblock \href {https://arxiv.org/abs/2407.03618} {Bm25s: Orders of magnitude faster lexical search via eager sparse scoring}.
+\newblock \href {https://arxiv.org/abs/2407.03618} {Bm25s: Orders of magnitude
+  faster lexical search via eager sparse scoring}.
 \newblock \emph{Preprint}, arXiv:2407.03618.
 
 \bibitem[{Teo(2023)}]{costar}
 Sheila Teo. 2023.
-\newblock \href {https://medium.com/towards-data-science/how-i-won-singapores-gpt-4-prompt-engineering-competition-34c195a93d41} {How i won singapore’s gpt-4 prompt engineering competition}.
+\newblock \href
+  {https://medium.com/towards-data-science/how-i-won-singapores-gpt-4-prompt-engineering-competition-34c195a93d41}
+  {How i won singapore’s gpt-4 prompt engineering competition}.
 
 \bibitem[{Wang et~al.(2023)Wang, Yang, and Wei}]{wang2023query2doc}
 Liang Wang, Nan Yang, and Furu Wei. 2023.
 \newblock Query2doc: Query expansion with large language models.
 \newblock \emph{arXiv preprint arXiv:2303.07678}.
 
-\bibitem[{Wei et~al.(2022)Wei, Wang, Schuurmans, Bosma, Xia, Chi, Le, Zhou et~al.}]{wei2022chain}
-Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed~Chi, Quoc~V Le, Denny Zhou, et~al. 2022.
-\newblock Chain-of-thought prompting elicits reasoning in large language models.
-\newblock \emph{Advances in neural information processing systems}, 35:24824--24837.
+\bibitem[{Wei et~al.(2022)Wei, Wang, Schuurmans, Bosma, Xia, Chi, Le, Zhou
+  et~al.}]{wei2022chain}
+Jason Wei, Xuezhi Wang, Dale Schuurmans, Maarten Bosma, Fei Xia, Ed~Chi, Quoc~V
+  Le, Denny Zhou, et~al. 2022.
+\newblock Chain-of-thought prompting elicits reasoning in large language
+  models.
+\newblock \emph{Advances in neural information processing systems},
+  35:24824--24837.
 
 \bibitem[{Xin et~al.(2020)Xin, Tang, Lee, Yu, and Lin}]{xin-etal-2020-deebert}
 Ji~Xin, Raphael Tang, Jaejun Lee, Yaoliang Yu, and Jimmy Lin. 2020.
-\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.204} {{D}ee{BERT}: Dynamic early exiting for accelerating {BERT} inference}.
-\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association for Computational Linguistics}, pages 2246--2251, Online. Association for Computational Linguistics.
+\newblock \href {https://doi.org/10.18653/v1/2020.acl-main.204} {{D}ee{BERT}:
+  Dynamic early exiting for accelerating {BERT} inference}.
+\newblock In \emph{Proceedings of the 58th Annual Meeting of the Association
+  for Computational Linguistics}, pages 2246--2251, Online. Association for
+  Computational Linguistics.
 
 \end{thebibliography}

@@ -1,5 +1,5 @@
 % This must be in the first 5 lines to tell arXiv to use pdfLaTeX, which is strongly recommended.
-% \pdfoutput=1  % Commented out for XeLaTeX compilation
+\pdfoutput=1  % Commented out for XeLaTeX compilation
 % In particular, the hyperref package requires pdfLaTeX in order to break URLs across lines.
 
 \documentclass[10pt]{article}
@@ -15,6 +15,7 @@
 \usepackage{amssymb}
 \usepackage{xcolor}
 \usepackage{booktabs}
+% \usepackage[utf8]{inputenc}
 
 % For proper rendering and hyphenation of words containing Latin characters (including in bib files)
 % \usepackage[T1]{fontenc}  % Not needed for XeLaTeX
@@ -25,13 +26,13 @@
 % This assumes your files are encoded as UTF8
 % \usepackage[utf8]{inputenc}  % Not needed for XeLaTeX
 
-% For Chinese character support in XeLaTeX
-\usepackage{xeCJK}
-% 设置中文字体，按优先级尝试不同字体
-\setCJKmainfont[
-    BoldFont={SimHei},
-    ItalicFont={KaiTi}
-]{SimSun}
+% % For Chinese character support in XeLaTeX
+% \usepackage{xeCJK}
+% % 设置中文字体，按优先级尝试不同字体
+% \setCJKmainfont[
+%     BoldFont={SimHei},
+%     ItalicFont={KaiTi}
+% ]{SimSun}
 
 % 将摘要标题从 "Abstract" 改为 "摘要"
 % \renewcommand{\abstractname}{摘要}
@@ -191,7 +192,7 @@
 \maketitle
 \begin{abstract}
 
-This paper presents MicroRCA-Agent, an innovative solution for microservice root cause analysis based on large language model agents, which constructs an intelligent fault root cause localization system with multimodal data fusion\footnote{This work is a technical report of our solution at the 2025 (8th) CCF International AIOps Challenge. The official website of the Challenge is \url{https://challenge.aiops.cn}.}. The technical innovations are embodied in three key aspects: First, we combine the pre-trained Drain log parsing algorithm with multi-level data filtering mechanism to efficiently compress massive logs into high-quality fault features. Second, we employ a dual anomaly detection approach that integrates Isolation Forest unsupervised learning algorithms with status code validation to achieve comprehensive trace anomaly identification. Third, we design a statistical symmetry ratio filtering mechanism coupled with a two-stage LLM analysis strategy to enable full-stack phenomenon summarization across node-service-pod hierarchies. The multimodal root cause analysis module leverages carefully designed cross-modal prompts to deeply integrate multimodal anomaly information, fully exploiting the cross-modal understanding and logical reasoning capabilities of large language models to generate structured analysis results encompassing fault components, root cause descriptions, and reasoning processes. Comprehensive ablation studies validate the complementary value of each modal data and the effectiveness of the system architecture. The proposed solution demonstrates superior performance in complex microservice fault scenarios, achieving a final score of 50.71. The code has been released at: \url{https://github.com/tangpan360/MicroRCA-Agent}.
+This paper presents MicroRCA-Agent, an innovative solution for microservice root cause analysis based on large language model agents, which constructs an intelligent fault root cause localization system with multimodal data fusion\footnote{This work is a technical report of our solution at the 2025 (8th) CCF International AIOps Challenge. The official website of the Challenge is \url{https://challenge.aiops.cn}.}. The technical innovations are embodied in three key aspects: First, we combine the pre-trained Drain log parsing algorithm with multi-level data filtering mechanism to efficiently compress massive logs into high-quality fault features. Second, we employ a dual anomaly detection approach that integrates Isolation Forest unsupervised learning algorithms with status code validation to achieve comprehensive trace anomaly identification. Third, we design a statistical symmetry ratio filtering mechanism coupled with a two-stage LLM analysis strategy to enable full-stack phenomenon summarization across node-service-pod hierarchies. The multimodal root cause analysis module leverages carefully designed cross-modal prompts to deeply integrate multimodal anomaly information, fully exploiting the cross-modal understanding and logical reasoning capabilities of large language models to generate structured analysis results encompassing fault components, root cause descriptions, and reasoning trace. Comprehensive ablation studies validate the complementary value of each modal data and the effectiveness of the system architecture. The proposed solution demonstrates superior performance in complex microservice fault scenarios, achieving a final score of 50.71. The code has been released at: \url{https://github.com/tangpan360/MicroRCA-Agent}.
 
 \end{abstract}
 
@@ -206,23 +207,30 @@ The log fault extraction module is based on a "template + rule" processing archi
 
 \begin{figure*}[t]
     \centering
-    \includegraphics[width=0.95\linewidth]{pics/fig1.pdf}
-    \caption{Overall architecture of MicroRCA-Agent}
+    \includegraphics[width=0.95\linewidth]{fig1.pdf}
+    \caption{Overall architecture of MicroRCA-Agent.}
     \label{fig1}
 \end{figure*}
 
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[width=0.95\linewidth]{pics/fig2.pdf}
-    \caption{Input data parsing}
+    \includegraphics[width=0.95\linewidth]{fig2.pdf}
+    \caption{Input data parsing.}
     \label{fig2}
+\end{figure*}
+
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[width=0.95\textwidth]{fig3.png}
+    \caption{Preprocessed input data.}
+    \label{fig3}
 \end{figure*}
 
 The trace fault detection module adopts a hybrid detection strategy of "unsupervised learning + rule enhancement". At its core, it leverages the Isolation Forest\cite{liu2008isolation} algorithm to construct anomaly detection model, which uses duration data from parent\_pod→child\_pod call chains during normal periods for model training. The model training process involves extracting normal data from 50 random samples, using 30-second sliding windows to extract temporal features, and generating the trace\_detectors.pkl model file upon completion. During the detection phase, anomaly detection is performed on the duration of parent\_pod→child\_pod call chains in fault periods to filter out significantly anomalous call chains and their corresponding durations. Additionally, it implements a status analysis function, extracting status.code and status.message information from traces to identify call failure patterns. Finally, it outputs two sets of results respectively: statistical analysis of the top 20 most frequent anomalous call combinations, and detailed status anomaly information for the top 20 most frequent cases.
 
 The metric fault summarization module designs a statistical symmetric ratio filtering strategy combined with a hierarchical two-stage LLM analysis approach. First, it performs mathematical statistical analysis on metric indicators and uses symmetric ratios to determine whether the statistical indicators of normal intervals and fault intervals are highly similar, thereby filtering normal data and significantly reducing the large model context length, enabling it to focus more on potentially anomalous data. After filtering, it conducts two-stage LLM analysis: the first stage is based on Application Performance Monitoring (APM) data and database component (TiDB) data, performing phenomenon summarization at both service level and pod level, including business metrics such as microservice request response and anomaly ratios, as well as related indicators of database auxiliary components TiDB, TiKV, and PD. The second stage combines the business metric phenomenon summary from the first stage with node-level infrastructure data to conduct comprehensive phenomenon analysis across three levels: service, pod, and node. This approach effectively controls computational costs while ensuring analytical depth.
 
-The multimodal root cause analysis module is designed with specialized multimodal prompts at its core, supporting flexible combinations of log, trace, and metric data across three modalities. The module adopts a multi-processing strategy to improve system processing efficiency and integrates comprehensive fault tolerance mechanisms and retry strategies. It ultimately outputs structured root cause analysis results containing component, reason, and reasoning\_trace, achieving a complete closed loop from phenomenon observation to root cause inference.
+The multimodal root cause analysis module is designed with specialized multimodal prompts at its core, supporting flexible combinations of log, trace, and metric data across three modalities. The module adopts a multi-processing strategy to improve system processing efficiency and integrates comprehensive fault tolerance mechanisms and retry strategies. It ultimately outputs structured root cause analysis results containing component, reason, and reasoning trace, achieving a complete closed loop from phenomenon observation to root cause inference.
 
 
 \section{Innovation and Practicality}
@@ -232,30 +240,28 @@ The innovation of this solution is embodied in its multi-level feature extractio
 
 In terms of practicality, this solution emphasizes a modular and scalable architectural design, enabling flexible adaptation to different business and system environments. The functional modules (log extraction, trace detection, metric summarization, root cause analysis) are decoupled from one another, allowing for independent deployment or on-demand combination. This design facilitates rapid implementation in microservice architectures of varying scales and complexities. In terms of processing efficiency, the solution significantly reduces the amount of irrelevant data entering the analysis phase via strategies like hierarchical filtering. This reduction in irrelevant data lowers computational and storage overhead, thus making the solution well-suited for high-concurrency, large-data-volume production environments.
 
-\begin{figure*}[htbp]
-    \centering
-    \includegraphics[width=0.95\textwidth]{pics/fig3.png}
-    \caption{Preprocessed input data}
-    \label{fig3}
-\end{figure*}
-
 \begin{figure*}[ht]
     \centering
-    \includegraphics[width=0.8\textwidth]{pics/fig4.pdf}
-    \caption{Unification of multimodal data timestamps}
+    \includegraphics[width=0.8\textwidth]{fig4.pdf}
+    \caption{Unification of multimodal data timestamps.}
     \label{fig4}
+
+    \vspace{10pt}
+    \includegraphics[width=0.85\textwidth]{fig5.pdf}
+    \caption{Log template extraction using Drain.}
+    \label{fig5}
 \end{figure*}
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.85\textwidth]{pics/fig5.pdf}
-    \caption{Log template extraction using Drain}
-    \label{fig5}
+    \includegraphics[width=0.85\textwidth]{fig6.pdf}
+    \caption{Multi-level data filtering and processing workflow.}
+    \label{fig6}
 
     \vspace{10pt}
-    \includegraphics[width=0.85\textwidth]{pics/fig6.pdf}
-    \caption{Multi-level data filtering and processing workflow}
-    \label{fig6}
+    \includegraphics[width=0.7\textwidth]{fig7.pdf}
+    \caption{Matching between time in input and log file names.}
+    \label{fig7}
 \end{figure*}
 
 
@@ -294,13 +300,8 @@ In response to the distinct format characteristics of the three data types (log,
 
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[width=0.7\textwidth]{pics/fig7.pdf}
-    \caption{Matching between time in input and log file names}
-    \label{fig7}
-
-    \vspace{10pt}
-    \includegraphics[width=0.75\textwidth]{pics/fig8.pdf}
-    \caption{Output of log fault extraction}
+    \includegraphics[width=0.75\textwidth]{fig8.pdf}
+    \caption{Output of log fault extraction.}
     \label{fig8}
 \end{figure*}
 
@@ -336,8 +337,8 @@ Based on the nanosecond-precision timestamps of the fault start and end times, s
 
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{pics/fig9.pdf}
-    \caption{Construction of Isolation Forest training data and model training}
+    \includegraphics[width=0.95\textwidth]{fig9.pdf}
+    \caption{Construction of Isolation Forest training data and model training.}
     \label{fig9}
 \end{figure*}
 
@@ -371,20 +372,20 @@ Distributed traces in microservice architectures contain abundant performance an
 
 \paragraph{Principle of Isolation Forest for Performance Anomaly Detection}
 
-\begin{figure*}[htbp]
-    \centering
-    \includegraphics[width=1.0\textwidth]{pics/fig10.pdf}
-    \caption{Example output of anomalous traces detected by Isolation Forest}
-    \label{fig10}
-\end{figure*}
-
 For detecting duration-based performance anomalies, the Isolation Forest unsupervised learning algorithm is employed. This algorithm operates on the core assumption that "anomalies are more easily isolated in the feature space" and quantifies the anomaly degree of data points by constructing multiple randomly partitioned trees. Isolation Forest is particularly suitable for anomaly detection in continuous numerical data, enabling automatic identification of significant deviation patterns in duration data without the need for labeled anomaly samples.
 
 \paragraph{Direct Inspection Mechanism for Status Codes}
 
-A direct inspection mechanism based on status codes is constructed, eliminating the need for a training process. The system directly analyzes the status.code and status.message fields within the tags of trace data, and filters out all abnormally statused invocations through a simple conditional judgment (status.code ≠ 0). This method can directly capture explicit abnormal states and specific information such as system errors, timeouts, and connection failures, providing deterministic anomaly evidence for fault root cause localization.
+A direct inspection mechanism based on status codes is constructed, eliminating the need for a training process. The system directly analyzes the status.code and status.message fields within the tags of trace data, and filters out all abnormally statused invocations through a simple conditional judgment (\( \text{status.code} \neq 0 \)). This method can directly capture explicit abnormal states and specific information such as system errors, timeouts, and connection failures, providing deterministic anomaly evidence for fault root cause localization.
 
 \paragraph{Construction of Isolation Forest Training Data and Model Training}
+
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{fig10.pdf}
+    \caption{Example output of anomalous traces detected by Isolation Forest.}
+    \label{fig10}
+\end{figure*}
 
 As illustrated in Figure \ref{fig9}, the construction of Isolation Forest training data and the subsequent model training primarily consist of the following components:
 
@@ -410,8 +411,8 @@ Key dimensional information is extracted from complex trace structures, includin
 
 \begin{figure*}[htbp]
     \centering
-    \includegraphics[width=0.95\textwidth]{pics/fig11.pdf}
-    \caption{Example output of anomalous traces detected by status code}
+    \includegraphics[width=1.0\textwidth]{fig11.pdf}
+    \caption{Example output of anomalous traces detected by status code.}
     \label{fig11}
 \end{figure*}
 
@@ -422,35 +423,35 @@ Key dimensional information is extracted from complex trace structures, includin
 \textbf{Duration Anomaly Result Output:} The system outputs the top 20 most frequent duration anomaly combinations, which include the following specific details:
 
 \begin{itemize}
-    \item node\_name：Node identifier where the anomaly occurs;
-    \item service\_name：Name of the anomalous service;
-    \item parent\_pod：Identifier of the caller container;
-    \item child\_pod：Identifier of the callee container;
-    \item operation\_name：Name of the specific operation;
-    \item normal\_avg\_duration：Average invocation latency during the normal period (derived from training data statistics);
-    \item anomaly\_avg\_duration：Average invocation latency during the anomalous period (derived from actual statistics of the fault phase);
-    \item anomaly\_count：Frequency of anomaly occurrences (format: Number of occurrences: N);
+    \item node\_nameNode: identifier where the anomaly occurs;
+    \item service\_name: Name of the anomalous service;
+    \item parent\_pod: Identifier of the caller container;
+    \item child\_pod: Identifier of the callee container;
+    \item operation\_name: Name of the specific operation;
+    \item normal\_avg\_duration: Average invocation latency during the normal period (derived from training data statistics);
+    \item anomaly\_avg\_duration: Average invocation latency during the anomalous period (derived from actual statistics of the fault phase);
+    \item anomaly\_count: Frequency of anomaly occurrences (format: Number of occurrences: N);
 \end{itemize}
 
 A specific example of the output of anomalous traces detected by the Isolation Forest is shown in Figure \ref{fig10}.
 
 \paragraph{Status Anomaly Detection Processing Flow}
 
-\textbf{Direct Status Check:} Status code checks are performed on all trace data within the fault time period, with no training process required. Information on status.code and status.message is parsed from the tags field of traces, and all anomalous status invocations are directly identified through conditional filtering (\( \text{status.code} \neq 0 \))。
+\textbf{Direct Status Check:} Status code checks are performed on all trace data within the fault time period, with no training process required. Information on status.code and status.message is parsed from the tags field of traces, and all anomalous status invocations are directly identified through conditional filtering (\( \text{status.code} \neq 0 \)).
 
 \textbf{Anomalous Status Pattern Statistics:} The identified anomalous statuses are grouped and counted by service invocation combinations, and the occurrence frequency of each anomalous pattern is calculated.
 
 \textbf{Status Anomaly Result Output:} The system outputs the top 20 most frequent status anomaly combinations, which include the following specific details:
 
 \begin{itemize}
-    \item Node\_name：Node identifier where the anomaly occurs;
-    \item Service\_name：Name of the anomalous service (Redis is automatically mapped to redis-cart);
-    \item Parent\_pod：Identifier of the caller container;
-    \item Child\_pod：Identifier of the callee container;
-    \item Operation\_name：Name of the specific operation;
-    \item Status\_code：Specific error status code;
-    \item Status\_message：Detailed description of the error status;
-    \item Occurrence\_count：Frequency of status anomaly occurrences (format: Number of occurrences: N);
+    \item Node\_name: Node identifier where the anomaly occurs;
+    \item Service\_name: Name of the anomalous service (Redis is automatically mapped to redis-cart);
+    \item Parent\_pod: Identifier of the caller container;
+    \item Child\_pod: Identifier of the callee container;
+    \item Operation\_name: Name of the specific operation;
+    \item Status\_code: Specific error status code;
+    \item Status\_message: Detailed description of the error status;
+    \item Occurrence\_count: Frequency of status anomaly occurrences (format: Number of occurrences: N);
 \end{itemize}
 
 A specific example of the output of anomalous traces detected by the Status Check is shown in Figure \ref{fig11}.
@@ -463,8 +464,8 @@ The Metric Fault Summary Module serves as a full-stack monitoring and analysis c
 
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.45\textwidth]{pics/fig12.png}
-    \caption{Schematic diagram of two-stage large language model phenomenon summary}
+    \includegraphics[width=0.45\textwidth]{fig12.png}
+    \caption{Schematic diagram of two-stage large language model phenomenon summary.}
     \label{fig12}
 \end{figure}
 
@@ -488,13 +489,6 @@ The system defines the normal time period using a relative time window approach.
 
 The proposed system uniformly processes the pod and service levels, and automatically extracts service identifiers by parsing pod names. For instance, pod instances such as frontend-0, frontend-1, and frontend-2 are uniformly classified under the "frontend" service by removing their numeric suffixes. This design simplifies the analysis complexity in microservice architectures while maintaining dual perspectives at both the service level and instance level, enabling effective identification of service-level common issues and specific anomalies in individual instances.
 
-\begin{figure*}[htbp]
-    \centering
-    \includegraphics[width=0.9\textwidth]{pics/fig13.png}
-    \caption{Prompt for stage 1's comprehensive phenomenon summarization. (The prompt is designed in Chinese; see source code and modify as needed)}
-    \label{fig13}
-\end{figure*}
-
 \paragraph{Application Performance Monitoring Metric Filtering}
 
 From the numerous redundant metrics in microservice APM monitoring data, 7 core key metrics are carefully selected: client\_error\_ratio (client error rate), error\_ratio (overall error rate), request (number of requests), response (number of responses), rrt (average response time), server\_error\_ratio (server error rate), and timeout (number of timeouts). These metrics cover the core dimensions of microservice performance, enabling comprehensive reflection of a service’s health status and anomalous characteristics while avoiding the impact of redundant data on the effectiveness of phenomenon analysis.
@@ -511,6 +505,20 @@ A specialized monitoring metric system is constructed for the TiDB distributed d
 
 \paragraph{Hierarchical Data Loading and Organization}
 
+\begin{figure*}[htbp]
+    \centering
+    \includegraphics[width=1.0\textwidth]{fig13.png}
+    \caption{Prompt for stage 1's comprehensive phenomenon summarization (The prompt is designed in Chinese; see source code and modify as needed).}
+    \label{fig13}
+\end{figure*}
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=0.75\textwidth]{fig14.png}
+    \caption{Example of comparative data for business metrics and TiDB database components.}
+    \label{fig14}
+\end{figure*}
+
 The system constructs distinct data paths for file localization based on monitoring levels, using each input date information output from the preprocessing stage. Specifically, APM business monitoring data is stored in the directory "Year-Month-Day/metric-parquet/apm/pod", infrastructure node monitoring data resides in "Year-Month-Day/metric-parquet/infra/infra\_node", container monitoring data is located in "Year-Month-Day/metric-parquet/infra/infra\_pod", and TiDB database monitoring data is stored in directories such as "Year-Month-Day/metric-parquet/infra/infra\_tidb". Through this hierarchical file organization method, precise data localization and loading are realized in accordance with monitoring dimensions.
 
 \paragraph{Precise Time Window Filtering and Data Merging}
@@ -524,19 +532,20 @@ A significance filtering mechanism based on statistical symmetric ratios is impl
 \begin{equation}
 P50_{\mathrm{symmetric\text{-}ratio}} = \frac{ \left| P50_{\mathrm{fault}} - P50_{\mathrm{normal}} \right| }{ \frac{ P50_{\mathrm{fault}} + P50_{\mathrm{normal}} }{2} + \varepsilon }
 \end{equation}
-
-Where $P50$ denotes the median, $P50_{\mathrm{fault}}$ and $P50_{\mathrm{normal}}$ represent the medians during the fault period and normal periods respectively, and $\varepsilon$ is a minimal value.
+where $P50$ denotes the median, $P50_{\mathrm{fault}}$ and $P50_{\mathrm{normal}}$ represent the medians during the fault period and normal periods respectively, and $\varepsilon$ is a minimal value.
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.75\textwidth]{pics/fig14.png}
-    \caption{Example of comparative data for business metrics and TiDB database components}
-    \label{fig14}
-
-    \vspace{10pt}
-    \includegraphics[width=0.7\textwidth]{pics/fig15.png}
-    \caption{Example of statistical data comparison for kpi\_key metrics between different nodes and the pods deployed on them}
+    \includegraphics[width=0.6\textwidth]{fig15.png}
+    \caption{Example of statistical data comparison for kpi\_key metrics between different nodes and the pods deployed on them.}
     \label{fig15}
+\end{figure*}
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=0.9\textwidth]{fig16.png}
+    \caption{Prompt for the stage 2's comprehensive phenomenon summarization.}
+    \label{fig16}
 \end{figure*}
 
 For the filtered key metrics, the pandas `describe` method is utilized to extract comprehensive descriptive statistical information, including key statistics such as median, interquartile range, and 99th percentile. Through a standardized data representation format, monitoring metrics of different types and dimensions are converted into structured inputs understandable to large language models, ensuring the accuracy and consistency of subsequent phenomenon summarization.
@@ -545,12 +554,6 @@ For the filtered key metrics, the pandas `describe` method is utilized to extrac
 
 \paragraph{Stage 1: Application Performance Monitoring Phenomenon Identification and Summarization}
 
-\begin{figure*}[!t]
-    \centering
-    \includegraphics[width=0.95\textwidth]{pics/fig16.png}
-    \caption{Prompt for the stage 2's comprehensive phenomenon summarization}
-    \label{fig16}
-\end{figure*}
 
 The system first conducts a comprehensive analysis of microservice application performance monitoring metrics and TiDB database component metrics, organizing filtered key abnormal metrics by service type where each service includes data from its multiple subordinate Pod instances; for example, the emailservice contains comparative APM metrics such as client\_error\_ratio (client error rate), error\_ratio (overall error rate), request (number of requests), response (number of responses), rrt (average response time), server\_error\_ratio (server error rate), and timeout (number of timeouts) across Pod instances like emailservice-0, emailservice-1, and emailservice-2, while integrating database-specific metrics of TiDB components including failed\_query\_ops (number of failed queries), duration\_99th (99th percentile request latency), and connection\_count (number of connections). A structured table with comparative data between normal periods and the fault period is constructed, and using a service-Pod hierarchical organization method, the large language model is invoked for the first-round phenomenon summarization (with prompt design shown in Figure \ref{fig13}); the data comparison table adopts JSON format, which, compared with Markdown, maintains clarity while significantly reducing token usage (specific format presented in Figure \ref{fig14}), and while analyzing Pod-level phenomena, the system naturally summarizes service-level common phenomena and differentiated performances, with the large language model only describing phenomena at this stage without making fault judgments.
 
@@ -558,8 +561,8 @@ The system first conducts a comprehensive analysis of microservice application p
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.95\textwidth]{pics/fig17.png}
-    \caption{Output example of the metric fault summarization module}
+    \includegraphics[width=0.95\textwidth]{fig17.png}
+    \caption{Output example of the metric fault summarization module.}
     \label{fig17}
 \end{figure*}
 
@@ -569,12 +572,26 @@ Building on the analysis of application performance monitoring data, the system 
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.95\textwidth]{pics/fig18.png}
-    \caption{Prompt of multimodal analysis}
+    \includegraphics[width=0.95\textwidth]{fig18.png}
+    \caption{Prompt of multimodal analysis.}
     \label{fig18}
 \end{figure*}
 
 After processing via the two-stage large language model analysis, the metric fault summarization module outputs a phenomenon description that includes the following content:
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=0.65\textwidth]{fig19.png}
+    \caption{Good case - ground truth range.}
+    \label{fig19}
+\end{figure*}
+
+\begin{figure*}[!t]
+    \centering
+    \includegraphics[width=0.7\textwidth]{fig20.png}
+    \caption{Good case - actual output values.}
+    \label{fig20}
+\end{figure*}
 
 \textbf{Application Performance Anomaly Phenomena:} Leveraging the service-Pod hierarchical information, microservice components and database components with significant performance changes are identified. This includes changes in request processing metrics such as request (number of requests), response (number of responses), and rrt (average response time); fluctuations in abnormal metrics like error\_ratio (overall error rate), client\_error\_ratio (client error rate), server\_error\_ratio (server error rate), and timeout (number of timeouts); and variations in database performance metrics of TiDB components, including failed\_query\_ops (number of failed queries), duration\_99th (99th percentile request latency), and connection\_count (number of connections). This enables the simultaneous representation of overall trends at the service level and individual differences at the Pod level.
 
@@ -613,33 +630,19 @@ Through the multimodal root cause analysis workflow outlined above, the system a
 
 \subsection{Comparison Between Good Cases and Bad Cases}
 
-\begin{figure*}[!t]
-    \centering
-    \includegraphics[width=0.65\textwidth]{pics/fig19.png}
-    \caption{Good case - ground truth range}
-    \label{fig19}
-\end{figure*}
-
-\begin{figure*}[!t]
-    \centering
-    \includegraphics[width=0.75\textwidth]{pics/fig20.png}
-    \caption{Good case - actual output values}
-    \label{fig20}
-\end{figure*}
-
 As shown in Figure \ref{fig19} and Figure \ref{fig20}, the proposed intelligent fault root cause localization system with multimodal data fusion can accurately identify the most likely faulty components and key root cause derivation evidence from the three modalities of monitoring data (logs, trace data, and system metrics) through in-depth integration. This demonstrates the effective implementation of the designed multimodal extraction scheme. Furthermore, the scheme is capable of making reasonable sequential reasoning, effectively identifying fault hierarchy types, and determining the actual hierarchical sources (pods, services, nodes) of potentially abnormal data indicators. Ultimately, the multimodal root cause analysis module can make reasonable fault root cause judgments based on log fault data, trace anomaly patterns, and metric phenomena. By effectively combining the multimodal analysis and logical reasoning capabilities of large language models, it achieves the goal of reasonable fault root cause localization.
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.75\textwidth]{pics/fig21.png}
-    \caption{Bad case - ground truth range}
+    \includegraphics[width=0.75\textwidth]{fig21.png}
+    \caption{Bad case - ground truth range.}
     \label{fig21}
 \end{figure*}
 
 \begin{figure*}[!t]
     \centering
-    \includegraphics[width=0.85\textwidth]{pics/fig22.png}
-    \caption{Bad case - actual output values}
+    \includegraphics[width=0.8\textwidth]{fig22.png}
+    \caption{Bad case - actual output values.}
     \label{fig22}
 \end{figure*}
 
@@ -649,7 +652,7 @@ Furthermore, we also explored typical bad cases to further identify areas for im
 
 \begin{table}[htbp]
 \centering
-\caption{Ablation Study of Each Component}
+\caption{Ablation Study of Each Component.}
 \begin{tabular}{cccc}
     \toprule
     Log & Trace & Metric & Score \\
@@ -669,14 +672,14 @@ Furthermore, we also explored typical bad cases to further identify areas for im
     \textcolor{red}{\checkmark} & \textcolor{red}{\checkmark} & \textcolor{red}{\checkmark} & 50.71 \\
     \bottomrule
 \end{tabular}
-\label{tab:ablation}
+\label{table1}
 \end{table}
 
-To further investigate the collaborative mechanism among the components of the proposed scheme, we conducted systematic ablation experiments. By comparing the performance of different modal combinations, we revealed the unique value and complementary relationships of each module. As shown in the experimental results in Table 1, in the single-modal experiments, the metric module performed the most prominently (42.78 points), mainly due to its two-stage LLM analysis strategy that effectively covers full-stack monitoring perspectives across the service, pod, and node levels; the trace module ranked second (31.09 points), demonstrating strong capabilities in call chain analysis and identifying dependencies between services; while the log module exhibited relatively weaker performance when used independently (23.59 points), primarily because the unstructured nature of log data limits the accuracy of its standalone analysis. The dual-modal combination experiments revealed significant synergistic effects: the log+metric combination achieved the best performance (51.27 points), with this strong synergy stemming from the fact that metrics provide quantitative localization of performance anomalies while logs offer rich semantic descriptions of faults—together forming a perfect complementarity from numerical anomalies to semantic explanations; the trace+metric combination ranked next (48.58 points) as they share a natural correlation in the performance monitoring dimension; and the log+trace combination showed relatively weaker performance (35.32 points) due to the lack of quantitative support from the metric module. The complete three-modal fusion system achieved 50.71 points, which, although slightly lower than the 51.27 points of the optimal dual-modal combination (log+metric), still significantly outperformed other combinations—indicating that the synergy between logs and metrics can cover most fault patterns, while the trace module retains unique value in scenarios involving complex call chain anomalies. Ultimately, the results of the ablation experiments fully validate the scientific rigor of the multimodal fusion architecture in this scheme, confirm the key role of the metric module as the system’s core analysis engine, demonstrate the optimal performance of the log+metric combination, and provide important empirical support for constructing an accurate and interpretable solution for microservice fault root cause localization based on large-model agents.
+To further investigate the collaborative mechanism among the components of the proposed scheme, we conducted systematic ablation experiments. By comparing the performance of different modal combinations, we revealed the unique value and complementary relationships of each module. As shown in the experimental results in Table \ref{table1}, in the single-modal experiments, the metric module performed the most prominently (42.78 points), mainly due to its two-stage LLM analysis strategy that effectively covers full-stack monitoring perspectives across the service, pod, and node levels; the trace module ranked second (31.09 points), demonstrating strong capabilities in call chain analysis and identifying dependencies between services; while the log module exhibited relatively weaker performance when used independently (23.59 points), primarily because the unstructured nature of log data limits the accuracy of its standalone analysis. The dual-modal combination experiments revealed significant synergistic effects: the log+metric combination achieved the best performance (51.27 points), with this strong synergy stemming from the fact that metrics provide quantitative localization of performance anomalies while logs offer rich semantic descriptions of faults—together forming a perfect complementarity from numerical anomalies to semantic explanations; the trace+metric combination ranked next (48.58 points) as they share a natural correlation in the performance monitoring dimension; and the log+trace combination showed relatively weaker performance (35.32 points) due to the lack of quantitative support from the metric module. The complete three-modal fusion system achieved 50.71 points, which, although slightly lower than the 51.27 points of the optimal dual-modal combination (log+metric), still significantly outperformed other combinations—indicating that the synergy between logs and metrics can cover most fault patterns, while the trace module retains unique value in scenarios involving complex call chain anomalies. Ultimately, the results of the ablation experiments fully validate the scientific rigor of the multimodal fusion architecture in this scheme, confirm the key role of the metric module as the system’s core analysis engine, demonstrate the optimal performance of the log+metric combination, and provide important empirical support for constructing an accurate and interpretable solution for microservice fault root cause localization based on large-model agents.
 
 \section{Conclusion}
 
-This solution constructs a large-model agent analysis framework for fault root cause localization in microservice systems, which consists of five core modules: data preprocessing, log fault extraction, call chain anomaly detection, metric phenomenon summarization, and multimodal root cause analysis. First, the data preprocessing module realizes structured parsing of fault input and timestamp standardization, laying a foundation for multi-source data fusion. The log module leverages the Drain algorithm and a multi-level filtering mechanism to extract error templates and screen valid structured log features. The call chain module combines the Isolation Forest model with status code checks to perform dual detection of duration and status anomalies. The metric module filters core business and infrastructure metrics, and uses large language models to conduct two-level phenomenon summarization, generating highly readable anomaly descriptions. Finally, the multimodal root cause analysis module fuses the outputs of log, trace, and metric data, and drives large language models to conduct comprehensive reasoning through well-designed prompts, outputting structured root cause analysis results that include faulty components, causes, and reasoning processes. Ablation experiments fully verify the complementary value of multimodal data and the effectiveness of the system architecture. This framework performs excellently in complex microservice fault scenarios, ultimately achieving a score of 50.71.
+This solution constructs a large-model agent analysis framework for fault root cause localization in microservice systems, which consists of five core modules: data preprocessing, log fault extraction, call chain anomaly detection, metric phenomenon summarization, and multimodal root cause analysis. First, the data preprocessing module realizes structured parsing of fault input and timestamp standardization, laying a foundation for multi-source data fusion. The log module leverages the Drain algorithm and a multi-level filtering mechanism to extract error templates and screen valid structured log features. The call chain module combines the Isolation Forest model with status code checks to perform dual detection of duration and status anomalies. The metric module filters core business and infrastructure metrics, and uses large language models to conduct two-level phenomenon summarization, generating highly readable anomaly descriptions. Finally, the multimodal root cause analysis module fuses the outputs of log, trace, and metric data, and drives large language models to conduct comprehensive reasoning through well-designed prompts, outputting structured root cause analysis results that include faulty components, causes, and reasoning trace. Ablation experiments fully verify the complementary value of multimodal data and the effectiveness of the system architecture. This framework performs excellently in complex microservice fault scenarios, ultimately achieving a score of 50.71.
 
 % Bibliography entries for the entire Anthology, followed by custom entries
 % \bibliography{anthology,custom}
